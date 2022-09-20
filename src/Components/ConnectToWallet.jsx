@@ -102,16 +102,42 @@ export default function ConnectToWallet() {
 
     return (
         <div>
-            <Heading className="bitsure">BitSure</Heading>
+            {/* <Heading className="bitsure">BitSure</Heading> */}
             <Heading as="h3" size="sm" className="token">
-                [0xEF44256a0da1a65049d0a965a3B347ebD05eE877] Use this wallet
-                address to import your NFTs. You can always see the token IDs as
-                the last 2 digits of your (license ID - 1).
+                <p
+                    style={{
+                        color: 'red',
+                        fontFamily: 'arial',
+                        fontSize: '1.4rem',
+                        fontWeight: 'bold',
+                        marginTop: '-3rem',
+                        marginBottom: '1rem',
+                    }}
+                >
+                    0xEF44256a0da1a65049d0a965a3B347ebD05eE877
+                </p>
+                <span
+                    style={{
+                        fontFamily: 'arial',
+                        color: '#ccc',
+                        textTransform: 'uppercase',
+                    }}
+                >
+                    (Use this wallet address to import your NFTs)
+                </span>
+                {/* You can always see the token IDs as
+                the last 2 digits of your (license ID - 1). */}
             </Heading>
-            <Text className="alchemy">
+            {/* <Text className="alchemy">
                 Use this Alchemy RPC Endpoint for enhanced experience ❤️:
-                <a href='https://polygon-mumbai.g.alchemy.com/v2/yl9TVrISmKuXSbjAf_l1tWsI6tajagX5'target='__blank' color='cyan'>https://polygon-mumbai.g.alchemy.com/v2/yl9TVrISmKuXSbjAf_l1tWsI6tajagX5</a>
-            </Text>
+                <a
+                    href="https://polygon-mumbai.g.alchemy.com/v2/yl9TVrISmKuXSbjAf_l1tWsI6tajagX5"
+                    target="__blank"
+                    color="cyan"
+                >
+                    https://polygon-mumbai.g.alchemy.com/v2/yl9TVrISmKuXSbjAf_l1tWsI6tajagX5
+                </a>
+            </Text> */}
             <div className="buttonContainer">
                 {account ? (
                     <Button onClick={disconnect}>Disconnect Wallet</Button>

@@ -72,7 +72,6 @@ function App() {
                         </Link>
                     </Tooltip>
                 </div>
-                <ConnectToWallet />
 
                 <Routes>
                     <Route path="profile" exact element={<Profile />} />

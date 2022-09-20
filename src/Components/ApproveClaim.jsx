@@ -1,14 +1,15 @@
-import { Button, Heading, Input } from '@chakra-ui/react'
+import { Button, Heading, Input, useDisclosure } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import getClaimsIds from '../middleware/getClaimsIds'
 import { useForm } from 'react-hook-form'
-
 import voting from '../middleware/voting'
+import ModalEle from './modal/ModalEle'
 
 export default function ApproveClaim() {
     const [claimIds, setClaimIds] = useState()
     const [error, setError] = useState()
-
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cancelRef = React.useRef()
     const {
         register,
         handleSubmit,
@@ -21,6 +22,7 @@ export default function ApproveClaim() {
     }
 
     async function getInsuranceClaimIds() {
+        onOpen()
         const ids = await getClaimsIds()
         console.log(ids[0]._hex)
 
@@ -32,9 +34,7 @@ export default function ApproveClaim() {
             <Button onClick={() => getInsuranceClaimIds()}>
                 View Claim Requests
             </Button>
-            {claimIds && (
-                <Heading>{parseInt(claimIds, 16)}</Heading>
-            )}
+            {claimIds && <Heading>{parseInt(claimIds, 16)}</Heading>}
 
             {claimIds && (
                 <div>
@@ -63,6 +63,14 @@ export default function ApproveClaim() {
                     </form>
                 </div>
             )}
+            <ModalEle
+                isOpen={isOpen}
+                onOpen={onOpen}
+                onClose={onClose}
+                title="View Claim Requests"
+                desc="Feature Coming Soon"
+                cancelRef={cancelRef}
+            />
             {/* <Heading>{claimIds}</Heading> */}
         </div>
     )

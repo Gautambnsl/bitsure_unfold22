@@ -4,9 +4,9 @@ import { useDispatch } from 'react-redux'
 import { setUserDetails } from '../slice'
 import { NFTStorage, File } from 'nft.storage'
 import { Input, Button, Heading } from '@chakra-ui/react'
-
+import { useToast } from '@chakra-ui/react'
 import { useSelector } from 'react-redux'
-
+import './home.css'
 import bitsureRgzInsurance from '../middleware/bitsureRgzContract'
 import getData from '../middleware/getData'
 
@@ -29,6 +29,8 @@ async function sendDataToIPFS(attributes) {
 
 export default function Profile() {
     const [error, setError] = useState()
+    const [input, setInput] = useState({})
+    const toast = useToast()
     const {
         register,
         handleSubmit,
@@ -37,8 +39,17 @@ export default function Profile() {
     } = useForm()
 
     const onSubmit = async (data) => {
+        console.log(data, 'data')
+        if (data?.name && data?.age && data?.h_address && data?.gd_link) {
+            toast({
+                title: `${data.name} !!, your form submitted succesfully `,
+                status: 'success',
+                position: 'top',
+                isClosable: true,
+            })
+            setInput({ ...data })
+        }
         const IPFSData = await sendDataToIPFS([data])
-
         dispatch(setUserDetails(data))
 
         let staticNFTURI =
@@ -56,17 +67,17 @@ export default function Profile() {
             setError(error)
         }
 
-        console.log(error);
+        console.log(error)
 
-        getDataFromAddress();
+        getDataFromAddress()
     }
 
-    getDataFromAddress();
+    getDataFromAddress()
 
     async function getDataFromAddress() {
         const userDataFromWalletAddress = await getData()
 
-        console.log(userDataFromWalletAddress);
+        console.log(userDataFromWalletAddress)
     }
 
     const dispatch = useDispatch()
@@ -78,30 +89,64 @@ export default function Profile() {
     // console.log(userDataFromWalletAddress);
 
     return (
-        <>
-            <Heading>Profile</Heading>
+        <div className="profile_box">
+            <Heading style={{ padding: '1rem 0 3rem 0', color: 'white' }}>
+                Registration Form
+            </Heading>
             {storeData.payload.userDetails ? (
-                <div className='profileDetails'>
-                    <Heading as='h3' size='lg'>Name: {storeData.payload.userDetails.name}</Heading>
-                    <Heading as='h3' size='lg'>Age: {storeData.payload.userDetails.age}</Heading>
-                    <Heading as='h3' size='lg'>Home Address: {storeData.payload.userDetails.h_address}</Heading>
-                    <Heading as='h3' size='lg'>Documents Link: {storeData.payload.userDetails.gd_link}</Heading>
+                <div className="profileDetails">
+                    <Heading as="h3" size="lg">
+                        Name: {storeData.payload.userDetails.name}
+                    </Heading>
+                    <Heading as="h3" size="lg">
+                        Age: {storeData.payload.userDetails.age}
+                    </Heading>
+                    <Heading as="h3" size="lg">
+                        Home Address: {storeData.payload.userDetails.h_address}
+                    </Heading>
+                    <Heading as="h3" size="lg">
+                        Documents Link: {storeData.payload.userDetails.gd_link}
+                    </Heading>
                 </div>
             ) : (
                 <form onSubmit={handleSubmit(onSubmit)} className="profileForm">
                     <Input
+                        style={{
+                            backgroundColor: 'white',
+                            fontSize: '1.5rem',
+                            padding: '1.5rem 2rem',
+                            marginBottom: '2rem',
+                        }}
                         placeholder="Full Name"
                         {...register('name', { required: true })}
                     />
                     <Input
+                        style={{
+                            backgroundColor: 'white',
+                            fontSize: '1.5rem',
+                            padding: '1.5rem 2rem',
+                            marginBottom: '2rem',
+                        }}
                         placeholder="Age"
                         {...register('age', { required: true })}
                     />
                     <Input
+                        style={{
+                            backgroundColor: 'white',
+                            fontSize: '1.5rem',
+                            padding: '1.5rem 2rem',
+                            marginBottom: '2rem',
+                        }}
                         placeholder="Home Address"
                         {...register('h_address', { required: true })}
                     />
                     <Input
+                        style={{
+                            backgroundColor: 'white',
+                            fontSize: '1.5rem',
+                            padding: '1.5rem 2rem',
+                            marginBottom: '2rem',
+                        }}
                         placeholder="Google Drive Link"
                         {...register('gd_link', { required: true })}
                     />
@@ -110,13 +155,20 @@ export default function Profile() {
                         <span>This field is required</span>
                     )}
 
-                    <Button type="submit" colorScheme="cyan">
+                    <Button
+                        type="submit"
+                        style={{
+                            padding: '2rem 4rem',
+                            fontSize: '1.5rem',
+                        }}
+                        colorScheme="gray"
+                    >
                         Submit
                     </Button>
 
                     {error && <span>Error: {error}</span>}
                 </form>
             )}
-        </>
+        </div>
     )
 }
